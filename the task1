@@ -4,13 +4,21 @@
 #include <stdio.h>
 
 using namespace std;
+int sum = 0;
+int N;
+
 
 void* func1(void * argFl){
     int *fl1 = (int*)argFl;
-    while( *fl1 == 0 ){
-        cout << "1" << flush;
+    cout << "введите N:"<< " ";
+    cin>> N;
+    while(N != -1){
+        sum+=1;
         sleep (2);
+        N--;
     }
+    *fl1 =1;
+    cout << "cумма" << sum;
     int* exitCode1 = new int(1);
     pthread_exit(exitCode1);
 }
@@ -19,14 +27,10 @@ void* func1(void * argFl){
 int main(){
     pthread_t thread1;
     int flag1 = 0;
-
-    cout << "введите N:"<< " ";
-    int N;
-    cin>> N;
-    for (int i=0;i < N-1; i++ ){
-        pthread_create (&thread1 , NULL , func1 , (void*)&flag1);
-        sleep(1);
-    }
+    pthread_create (&thread1 , NULL , func1 , (void*)&flag1);
+    sleep(1);
+    cout << endl;
+    
     flag1 = 1;
 
     int* exitCode1;
@@ -38,4 +42,3 @@ int main(){
     delete(exitCode1);
 
 }
-
