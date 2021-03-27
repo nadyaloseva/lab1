@@ -1,45 +1,22 @@
-#include <pthread.h>
+
 #include <iostream>
-#include <unistd.h>
+#include <thread>
 #include <stdio.h>
 
 using namespace std;
-int sum = 0;
-int N;
 
 
-void* func1(void * argFl){
-    int *fl1 = (int*)argFl;
-    while (*fl1 == 0 ){
-        sum = sum +1;
-        cout << "1";
-        N--;
-        sleep (2);
-    }
-    int* exitCode1 = new int(1);
-    pthread_exit(exitCode1);
+void dowork(int &sum){
+    sum+=1;
+    sleep (2);
 }
-
 
 int main(){
-    pthread_t thread1;
-    int flag1 = 0;
-    cout << "введите N:"<< " ";
-    cin >> N;
-    for (int i=0; i< N; i++){
-    pthread_create (&thread1 , NULL , func1 , (void*)&flag1);
-    }
-    sleep(1);
-    flag1 = 1;
-    cout << endl;
-    cout << "cумма " << sum;
-
-
-    int* exitCode1;
-
-    pthread_join(thread1,(void**)&exitCode1);
-
-
-    delete(exitCode1);
-
+    int n = 0;
+    cout << "Введите n: ";
+    cin >> n;
+    thread t (dowork,std :: ref (n));
+    t.join();
+    cout << "Сумма равна:" << n ;
 }
+
